@@ -13,8 +13,8 @@ You write a Jira ticket. Claude builds it and posts a preview link for you to re
 | 3 | Claude | Reads the ticket, builds the feature, opens a PR |
 | 4 | Claude | Posts a preview URL as a Jira comment |
 | 5 | PM | Reviews the preview in their browser |
-| 6 | PM | Types **"approve"** in the Claude session → ticket moves to In Review |
-| 6 | PM | Or types feedback → Claude iterates, then **"push and review"** to update |
+| 6 | PM | Types **`/approve`** in the Claude session → ticket moves to In Review |
+| 6 | PM | Or types feedback → Claude iterates, then **`/push-and-review`** to update |
 | 7 | Dev team | Reviews code on GitHub and merges → feature goes live |
 
 ---
@@ -121,9 +121,9 @@ https://dumb-music-player-pr-2.onrender.com
 
 Open it in your browser and check against your acceptance criteria.
 
-**If it looks good** → type **"approve"** in the Claude session. Claude will move the ticket to **In Review** and notify the dev team to do a code review and ship it.
+**If it looks good** → type **`/approve`** in the Claude session. Claude will move the ticket to **In Review** and notify the dev team to do a code review and ship it.
 
-**If changes are needed** → describe what's wrong directly in the Claude session. Claude iterates immediately and updates the preview. When ready, say **"push and review"** to push the updated changes.
+**If changes are needed** → describe what's wrong directly in the Claude session. Claude iterates immediately. When ready, type **`/push-and-review`** to push the updated changes and refresh the preview.
 
 - **Session closed** → find the handoff block in the latest Jira comment, copy it, paste it into a new Claude session, and describe what needs to change. Claude will read all previous comments and continue from where it left off.
 

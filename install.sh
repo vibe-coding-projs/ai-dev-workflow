@@ -86,10 +86,11 @@ claude mcp add github \
 
 echo "✓ Claude Code CLI MCPs configured"
 
-# 6. Copy global CLAUDE.md to ~/.claude/
-mkdir -p "$HOME/.claude"
+# 6. Copy global CLAUDE.md and commands to ~/.claude/
+mkdir -p "$HOME/.claude/commands"
 cp claude/CLAUDE.md "$HOME/.claude/CLAUDE.md"
-echo "✓ Global CLAUDE.md copied to ~/.claude/CLAUDE.md"
+cp claude/commands/*.md "$HOME/.claude/commands/"
+echo "✓ Global CLAUDE.md and commands copied to ~/.claude/"
 
 echo ""
 
