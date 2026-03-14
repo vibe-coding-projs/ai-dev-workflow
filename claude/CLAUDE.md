@@ -24,6 +24,14 @@ Automatically do ALL of the following without being asked:
    - Summary of changes made
    - Any open questions or decisions
 
+### After PR is opened (human steps — for documentation)
+The following steps happen outside Claude Code:
+1. **PM** reviews the Render preview URL
+2. **PM** moves Jira ticket to **PM Approved** when happy with the preview
+3. **Dev team / code review agents** review the PR code on GitHub
+4. **Dev** merges the PR → Render auto-deploys to production
+5. Jira ticket moves to **Done**
+
 ### Session handoff block
 At the end of every session, output a handoff block in this format so anyone can continue the work:
 

@@ -9,15 +9,17 @@ PM creates Jira ticket (e.g. DMP-1)
        ↓
 Run: ./scripts/work-on-ticket.sh DMP-1
        ↓
-Repo is cloned/pulled automatically
+Claude reads ticket → sets to In Progress → creates branch
        ↓
-Claude Code session opens with ticket context
+Claude implements + posts Jira comment per change
        ↓
-Claude reads ticket (via Jira MCP), sets status to In Progress, writes code, opens PR
+Claude opens PR → sets ticket to In Review → posts PR link + preview URL to Jira
        ↓
-Claude updates Jira ticket with PR link + preview URL
+PM reviews Render preview → moves ticket to PM Approved
        ↓
-PM reviews preview URL → Dev merges → Prod deploy
+Dev team / code review agents review PR on GitHub
+       ↓
+Dev merges PR → Render auto-deploys to prod → ticket moves to Done
 ```
 
 ## Setup (once per machine)
