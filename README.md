@@ -2,27 +2,103 @@
 
 Config and scripts for a Jira → Claude Code → GitHub → Render preview workflow.
 
-## How it works
+---
+
+## For Product Managers
+
+### How it works
+
+You write a Jira ticket. Claude Code implements it, opens a PR, and gives you a preview link to review — all automatically. You never need to touch code or GitHub.
 
 ```
-PM creates Jira ticket (e.g. DMP-1)
+You write Jira ticket
        ↓
-Run: ./scripts/work-on-ticket.sh DMP-1
+Developer runs: ./scripts/work-on-ticket.sh DMP-1
        ↓
-Claude reads ticket → sets to In Progress → creates branch
+Claude reads your ticket, builds the feature, opens a PR
        ↓
-Claude implements + posts Jira comment per change
+You get a preview URL posted as a Jira comment
        ↓
-Claude opens PR → sets ticket to In Review → posts PR link + preview URL to Jira
+You review the preview in your browser
        ↓
-PM reviews Render preview → moves ticket to PM Approved
+You move the ticket to "PM Approved" in Jira
        ↓
-Dev team / code review agents review PR on GitHub
-       ↓
-Dev merges PR → Render auto-deploys to prod → ticket moves to Done
+Dev team reviews the code and merges → goes live
 ```
 
-## Setup (once per machine)
+---
+
+### Step 1 — Write a good Jira ticket
+
+The quality of Claude's output depends on the quality of your ticket. Use this template:
+
+```
+## What
+[One sentence describing what needs to change]
+
+## Why
+[The user problem or business reason]
+
+## Acceptance Criteria
+- [ ] [Specific thing that must be true when done]
+- [ ] [Another specific thing]
+
+## Design / references
+[Link to Figma, screenshot, or example if relevant]
+```
+
+**Tips:**
+- Be specific about what you want to see, not how to build it
+- Include screenshots or examples where possible
+- Acceptance criteria should be things you can visually verify in the preview
+
+---
+
+### Step 2 — Wait for the preview
+
+Once a developer kicks off the session, Claude will post updates directly to your Jira ticket as comments, including:
+- What branch was created
+- What changes were made and why
+- A **preview URL** to review the feature live
+
+The preview URL looks like: `https://dmp-1-feature-name.onrender.com`
+
+> Note: The preview environment may take 1-2 minutes to spin up after the comment is posted.
+
+---
+
+### Step 3 — Review the preview
+
+Open the preview URL in your browser and check against your acceptance criteria.
+
+- If it looks good → move the Jira ticket to **PM Approved**
+- If changes are needed → add a comment to the Jira ticket describing what's wrong. The developer will ask Claude to iterate.
+
+---
+
+### Step 4 — Done
+
+Once you mark it **PM Approved**, the dev team reviews the code and merges it. The feature goes live automatically on production.
+
+You'll see the ticket move to **Done** when it's live.
+
+---
+
+### One-time setup (ask your developer to do this)
+
+PMs don't need to install anything. Ask your developer to run:
+
+```bash
+git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
+cd ai-dev-workflow
+./install.sh
+```
+
+---
+
+## For Developers
+
+### One-time setup
 
 ```bash
 git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
@@ -31,7 +107,7 @@ cd ai-dev-workflow
 ```
 
 The install script will:
-1. Prompt you for your tokens
+1. Prompt you for your tokens (GitHub + Jira)
 2. Configure MCPs for both **Claude Desktop** and **Claude Code CLI** (user-scoped, applies across all repos)
 3. Copy the global `CLAUDE.md` to `~/.claude/CLAUDE.md` so Claude follows the workflow rules in every session
 
@@ -45,7 +121,7 @@ You'll need:
 > - `config.json` — internal preferences (do not edit)
 > - `claude_desktop_config.json` — MCP servers config (this is what the install script writes)
 
-## Working on a ticket
+### Working on a ticket
 
 ```bash
 ./scripts/work-on-ticket.sh DMP-1
@@ -55,10 +131,19 @@ Claude will automatically:
 - Read the Jira ticket
 - Set ticket status to **In Progress**
 - Create a branch, write code, open a PR
+- Post a Jira comment per meaningful change
 - Set ticket status to **In Review** with PR link + preview URL
 - Output a handoff block for team continuity
 
-## Adding a new project
+### Continuing a session someone else started
+
+Copy the handoff block from the Jira ticket comment and paste it into a new Claude Code session, then say:
+
+```
+continue work on DMP-1
+```
+
+### Adding a new project
 
 Edit `config/project-mapping.yaml`:
 
@@ -70,6 +155,20 @@ projects:
     branch: main
     local_path: ~/projects/dumb-music-player
 ```
+
+---
+
+## Jira workflow statuses
+
+| Status | Set by | Meaning |
+|---|---|---|
+| To Do | PM | Ticket is ready to be worked on |
+| In Progress | Claude | Development has started |
+| In Review | Claude | PR is open, preview is ready |
+| PM Approved | PM | PM has reviewed preview and approved |
+| Done | Dev | Merged to main, live in production |
+
+---
 
 ## Files
 
