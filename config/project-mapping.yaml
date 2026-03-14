@@ -1,0 +1,14 @@
+# Jira project → GitHub repo mapping
+# Add a new entry for each Jira project space
+
+projects:
+  DMP:
+    repo: vibe-coding-projs/dumb-music-player
+    branch: main
+    local_path: ~/projects/dumb-music-player
+
+  # Add more projects below:
+  # BACKEND:
+  #   repo: vibe-coding-projs/backend-api
+  #   branch: main
+  #   local_path: ~/projects/backend-api
