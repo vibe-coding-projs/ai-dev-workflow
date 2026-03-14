@@ -72,7 +72,8 @@ The preview URL looks like: `https://dmp-1-feature-name.onrender.com`
 Open the preview URL in your browser and check against your acceptance criteria.
 
 - If it looks good → add a comment on the Jira ticket saying **"Approved"**
-- If changes are needed → add a comment on the Jira ticket describing what's wrong, then run `./scripts/work-on-ticket.sh DMP-1` again. Claude will read your comment and iterate.
+- If changes are needed → describe what's wrong directly in the Claude session. Claude will iterate immediately. Once done, it will update the PR and Jira comment automatically.
+  - If the session is closed → add a comment on the Jira ticket describing what's wrong, then run `./scripts/work-on-ticket.sh DMP-1` again. Claude will read the comment and continue.
 
 ---
 
