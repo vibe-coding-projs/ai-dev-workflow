@@ -1,10 +1,6 @@
 # AI Dev Workflow
 
----
-
-# For Product Managers
-
-You write a Jira ticket. Claude builds it, and posts a preview link for you to review — all without touching code or GitHub.
+You write a Jira ticket. Claude builds it and posts a preview link for you to review — no developers needed until final code review.
 
 ---
 
@@ -13,7 +9,7 @@ You write a Jira ticket. Claude builds it, and posts a preview link for you to r
 | Step | Who | What happens |
 |---|---|---|
 | 1 | PM | Writes a Jira ticket |
-| 2 | Technical PM / Dev | Runs a command to start Claude |
+| 2 | PM | Runs a command to start Claude |
 | 3 | Claude | Reads the ticket, builds the feature, opens a PR |
 | 4 | Claude | Posts a preview URL as a Jira comment |
 | 5 | PM | Reviews the preview in their browser |
@@ -22,7 +18,75 @@ You write a Jira ticket. Claude builds it, and posts a preview link for you to r
 
 ---
 
-## Step 1 — Write a Jira ticket
+## One-time setup
+
+### Prerequisites
+
+Install these before running setup:
+
+| Tool | How to install | Why |
+|---|---|---|
+| macOS | — | Scripts are Mac-only |
+| Git | Pre-installed, or [git-scm.com](https://git-scm.com) | Clone and push repos |
+| Node.js + npm | [nodejs.org](https://nodejs.org) — install LTS version | Run GitHub MCP server |
+| Claude Code CLI | `npm install -g @anthropic-ai/claude-code` | Run AI coding sessions |
+| Claude Pro account | [claude.ai](https://claude.ai) | Required to authenticate Claude Code |
+| GitHub account | Your org's GitHub | Access to repos |
+| Jira account | Your org's Atlassian workspace | Access to tickets |
+
+Verify everything is ready:
+
+```bash
+git --version     # v2 or higher
+node --version    # v18 or higher
+npm --version     # v9 or higher
+claude --version  # any version
+```
+
+### Credentials
+
+Get these ready before running the install script:
+
+| Credential | Where to get it |
+|---|---|
+| GitHub Personal Access Token | [github.com/settings/tokens](https://github.com/settings/tokens) — enable `repo` scope |
+| Jira URL | e.g. `https://your-org.atlassian.net` |
+| Jira Email | The email you use to log into Jira |
+| Jira API Token | [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
+
+### Install
+
+```bash
+git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
+cd ai-dev-workflow
+./install.sh
+```
+
+The script will prompt for your credentials and automatically:
+- Install `uv` (needed for Jira MCP)
+- Configure Jira and GitHub MCPs for Claude Code CLI and Claude Desktop
+- Copy workflow rules to `~/.claude/CLAUDE.md` so Claude follows the process in every session
+
+---
+
+## Day to day usage
+
+### Starting work on a ticket
+
+```bash
+cd ai-dev-workflow
+./scripts/work-on-ticket.sh DMP-1
+```
+
+Claude will automatically:
+- Read the Jira ticket and all its comments
+- Set the ticket to **In Progress**
+- Create a branch, implement the feature, open a PR
+- Post a Jira comment for each meaningful change
+- Set the ticket to **In Review** with the PR link and preview URL
+- Post a handoff block at the end of the session
+
+### Writing a good Jira ticket
 
 The better your ticket, the better Claude's output. Use this format:
 
@@ -46,40 +110,27 @@ The better your ticket, the better Claude's output. Use this format:
 - Acceptance criteria should be things you can check yourself in the browser
 - Screenshots and examples help a lot
 
----
+### Reviewing the preview
 
-## Step 2 — Wait for the preview
-
-Once the Claude session is kicked off, watch your Jira ticket — Claude posts comments as it works, including a **preview URL** when it's done.
-
-The preview URL looks like:
+Once Claude is done, it will post a preview URL as a Jira comment:
 ```
 https://dmp-1-feature-name.onrender.com
 ```
-
 > The preview may take 1-2 minutes to load the first time.
 
----
+Open it in your browser and check against your acceptance criteria.
 
-## Step 3 — Review and give feedback
-
-Open the preview URL and check it against your acceptance criteria.
-
-**If it looks good:**
-Add a comment on the Jira ticket saying **"Approved"** — that signals the dev team to do a final code review and ship it.
+**If it looks good** → comment **"Approved"** on the Jira ticket. The dev team will do a final code review and ship it.
 
 **If changes are needed:**
-
 - **Session still open** → type your feedback directly into the Claude session. Claude iterates immediately and updates the preview.
-- **Session closed** → find the handoff block at the bottom of the latest Jira comment, copy it, paste it into a new Claude session, and describe what needs to change. Claude will read all previous comments and continue from where it left off.
+- **Session closed** → find the handoff block in the latest Jira comment, copy it, paste it into a new Claude session, and describe what needs to change. Claude will read all previous comments and continue from where it left off.
 
----
+### Resuming a closed session
 
-## Step 4 — It goes live
-
-Once you've approved, the dev team reviews the code and merges it. The feature deploys to production automatically.
-
-The Jira ticket moves to **Done** when it's live.
+1. Find the **handoff block** in the latest Jira comment
+2. Copy and paste it into a new Claude Code session
+3. Describe what needs to change
 
 ---
 
@@ -90,101 +141,8 @@ The Jira ticket moves to **Done** when it's live.
 | To Do | Ticket is ready to be worked on |
 | In Progress | Claude is building the feature |
 | In Review | Preview is ready for you to review |
-| In Review + "Approved" comment | You've signed off, waiting for dev merge |
+| In Review + "Approved" comment | Signed off, waiting for dev merge |
 | Done | Live in production |
-
----
-
-## One-time setup (you don't need to do this)
-
-PMs don't install anything. Ask your Technical PM or developer to set up the workflow on their machine — see the technical setup section below.
-
----
----
-
-# For Technical PM / Developers
-
-This is the person who runs Claude Code sessions. You don't need to write code — Claude does the implementation — but you need a working local environment.
-
----
-
-## Prerequisites
-
-Install these before running setup:
-
-| Tool | How to install | Why |
-|---|---|---|
-| macOS | — | Scripts are Mac-only |
-| Git | Pre-installed, or [git-scm.com](https://git-scm.com) | Clone and push repos |
-| Node.js + npm | [nodejs.org](https://nodejs.org) — install LTS version | Run GitHub MCP server |
-| Claude Code CLI | `npm install -g @anthropic-ai/claude-code` | Run AI coding sessions |
-| Claude Pro account | [claude.ai](https://claude.ai) | Required to authenticate Claude Code |
-| GitHub account | Your org's GitHub | Access to repos |
-| Jira account | Your org's Atlassian workspace | Access to tickets |
-
-Verify everything is ready:
-
-```bash
-git --version     # v2 or higher
-node --version    # v18 or higher
-npm --version     # v9 or higher
-claude --version  # any version
-```
-
----
-
-## One-time setup
-
-You'll need four things before running the install script. Get these ready:
-
-| Credential | Where to get it |
-|---|---|
-| GitHub Personal Access Token | [github.com/settings/tokens](https://github.com/settings/tokens) — enable `repo` scope |
-| Jira URL | e.g. `https://your-org.atlassian.net` |
-| Jira Email | The email you use to log into Jira |
-| Jira API Token | [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
-
-Then run:
-
-```bash
-git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
-cd ai-dev-workflow
-./install.sh
-```
-
-The script will prompt for your credentials and automatically:
-- Install `uv` (needed for Jira MCP)
-- Configure Jira and GitHub MCPs for Claude Code CLI and Claude Desktop
-- Copy workflow rules to `~/.claude/CLAUDE.md` so Claude follows the process in every session
-
----
-
-## Working on a ticket
-
-```bash
-cd ai-dev-workflow
-./scripts/work-on-ticket.sh DMP-1
-```
-
-Claude will automatically:
-- Read the Jira ticket and all its comments
-- Set the ticket to **In Progress**
-- Create a branch, implement the feature, open a PR
-- Post a Jira comment for each meaningful change
-- Set the ticket to **In Review** with the PR link and preview URL
-- Post a handoff block at the end of the session
-
----
-
-## Resuming a session
-
-If a session was closed and needs to continue (e.g. PM left feedback on Jira):
-
-1. Find the **handoff block** in the latest Jira comment
-2. Copy it and paste it into a new Claude Code session
-3. Tell Claude what the PM wants changed
-
-Claude will read the full ticket history and continue on the same branch.
 
 ---
 
