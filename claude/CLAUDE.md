@@ -8,6 +8,12 @@
 3. Create a branch named `<PROJECT>-<id>-<short-description>` (e.g. `DMP-1-update-button-colors`)
 4. Add a comment to the Jira ticket with the branch name
 
+### During implementation
+Post a Jira comment for each meaningful change, including:
+- What file(s) were changed and why
+- Any decision made (e.g. chose approach A over B because...)
+- Any blocker or open question encountered
+
 ### When done implementing
 Automatically do ALL of the following without being asked:
 1. Create a pull request on GitHub with a clear description of what was changed and why
