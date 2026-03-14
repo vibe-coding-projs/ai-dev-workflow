@@ -28,7 +28,7 @@ cd ai-dev-workflow
 ./install.sh
 ```
 
-Then fill in your tokens in `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Then fill in your tokens in `~/Library/Application Support/Claude/config.json`:
 - `GITHUB_PERSONAL_ACCESS_TOKEN` — [GitHub Settings → Tokens](https://github.com/settings/tokens)
 - `JIRA_HOST` — e.g. `https://your-org.atlassian.net`
 - `JIRA_EMAIL` — your Atlassian email

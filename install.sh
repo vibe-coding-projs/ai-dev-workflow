@@ -14,7 +14,7 @@ echo "✓ Scripts are executable"
 
 # 2. Copy MCP config to Claude Desktop
 CLAUDE_CONFIG_DIR="$HOME/Library/Application Support/Claude"
-CLAUDE_CONFIG_FILE="$CLAUDE_CONFIG_DIR/claude_desktop_config.json"
+CLAUDE_CONFIG_FILE="$CLAUDE_CONFIG_DIR/config.json"
 
 mkdir -p "$CLAUDE_CONFIG_DIR"
 
