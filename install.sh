@@ -13,22 +13,34 @@ chmod +x scripts/work-on-ticket.sh
 echo "✓ Scripts are executable"
 echo ""
 
-# 2. Collect tokens interactively
+# 2. Install uv/uvx if missing (required for mcp-atlassian)
+if ! command -v uvx &>/dev/null; then
+  echo "Installing uv (required for Jira MCP)..."
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  export PATH="$HOME/.local/bin:$PATH"
+  echo "✓ uv installed"
+else
+  echo "✓ uv already installed"
+fi
+echo ""
+
+# 3. Collect tokens interactively
 echo "=== Enter your credentials ==="
 echo "(These will be saved to your Claude Desktop MCP config)"
 echo ""
 
 read -p "GitHub Personal Access Token: " GITHUB_TOKEN
-read -p "Jira Host (e.g. https://your-org.atlassian.net): " JIRA_HOST
+read -p "Jira URL (e.g. https://your-org.atlassian.net): " JIRA_URL
 read -p "Jira Email: " JIRA_EMAIL
 read -p "Jira API Token: " JIRA_API_TOKEN
 
 echo ""
 
-# 3. Write MCP config for Claude Desktop
+# 4. Write MCP config for Claude Desktop
 # Note: MCP servers go in claude_desktop_config.json, NOT config.json
 CLAUDE_CONFIG_DIR="$HOME/Library/Application Support/Claude"
 MCP_CONFIG_FILE="$CLAUDE_CONFIG_DIR/claude_desktop_config.json"
+UVX_PATH="$HOME/.local/bin/uvx"
 
 mkdir -p "$CLAUDE_CONFIG_DIR"
 
@@ -42,12 +54,12 @@ cat > "$MCP_CONFIG_FILE" <<EOF
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_TOKEN"
       }
     },
-    "jira": {
-      "command": "npx",
-      "args": ["-y", "@alex-ai/jira-mcp"],
+    "mcp-atlassian": {
+      "command": "$UVX_PATH",
+      "args": ["mcp-atlassian"],
       "env": {
-        "JIRA_HOST": "$JIRA_HOST",
-        "JIRA_EMAIL": "$JIRA_EMAIL",
+        "JIRA_URL": "$JIRA_URL",
+        "JIRA_USERNAME": "$JIRA_EMAIL",
         "JIRA_API_TOKEN": "$JIRA_API_TOKEN"
       }
     }
@@ -58,7 +70,7 @@ EOF
 echo "✓ MCP config written to: $MCP_CONFIG_FILE"
 echo ""
 
-# 4. Done
+# 5. Done
 echo "=== Next steps ==="
 echo "1. Update config/project-mapping.yaml with your Jira projects"
 echo "2. Restart Claude Desktop"
