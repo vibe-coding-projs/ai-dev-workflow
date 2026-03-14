@@ -1,161 +1,165 @@
 # AI Dev Workflow
 
-Config and scripts for a Jira → Claude Code → GitHub → Render preview workflow.
+---
+
+# For Product Managers
+
+You write a Jira ticket. Claude builds it, and posts a preview link for you to review — all without touching code or GitHub.
 
 ---
 
-## For Product Managers
+## How it works
 
-### How it works
-
-You write a Jira ticket. Claude Code implements it, opens a PR, and gives you a preview link to review — all automatically. You never need to touch code or GitHub.
-
-```
-You write Jira ticket
-       ↓
-Technical Product / Dev runs: ./scripts/work-on-ticket.sh DMP-1
-       ↓
-Claude reads your ticket, builds the feature, opens a PR
-       ↓
-You get a preview URL posted as a Jira comment
-       ↓
-You review the preview in your browser
-       ↓
-You add an approval comment to the Jira ticket
-       ↓
-Dev team reviews the code and merges → goes live
-```
+| Step | Who | What happens |
+|---|---|---|
+| 1 | PM | Writes a Jira ticket |
+| 2 | Technical PM / Dev | Runs a command to start Claude |
+| 3 | Claude | Reads the ticket, builds the feature, opens a PR |
+| 4 | Claude | Posts a preview URL as a Jira comment |
+| 5 | PM | Reviews the preview in their browser |
+| 6 | PM | Comments "Approved" on the Jira ticket, or gives feedback |
+| 7 | Dev team | Reviews code and merges → feature goes live |
 
 ---
 
-### Step 1 — Write a good Jira ticket
+## Step 1 — Write a Jira ticket
 
-The quality of Claude's output depends on the quality of your ticket. Use this template:
+The better your ticket, the better Claude's output. Use this format:
 
 ```
 ## What
-[One sentence describing what needs to change]
+[One sentence: what needs to change]
 
 ## Why
 [The user problem or business reason]
 
 ## Acceptance Criteria
-- [ ] [Specific thing that must be true when done]
-- [ ] [Another specific thing]
+- [ ] [Something you can visually check in the preview]
+- [ ] [Another checkable thing]
 
 ## Design / references
-[Link to Figma, screenshot, or example if relevant]
+[Figma link, screenshot, or example — if you have one]
 ```
 
 **Tips:**
-- Be specific about what you want to see, not how to build it
-- Include screenshots or examples where possible
-- Acceptance criteria should be things you can visually verify in the preview
+- Describe what you want to see, not how to build it
+- Acceptance criteria should be things you can check yourself in the browser
+- Screenshots and examples help a lot
 
 ---
 
-### Step 2 — Wait for the preview
+## Step 2 — Wait for the preview
 
-Once a developer kicks off the session, Claude will post updates directly to your Jira ticket as comments, including:
-- What branch was created
-- What changes were made and why
-- A **preview URL** to review the feature live
+Once the Claude session is kicked off, watch your Jira ticket — Claude posts comments as it works, including a **preview URL** when it's done.
 
-The preview URL looks like: `https://dmp-1-feature-name.onrender.com`
-
-> Note: The preview environment may take 1-2 minutes to spin up after the comment is posted.
-
----
-
-### Step 3 — Review the preview
-
-Open the preview URL in your browser and check against your acceptance criteria.
-
-- If it looks good → add a comment on the Jira ticket saying **"Approved"**
-- If changes are needed → describe what's wrong directly in the Claude session. Claude will iterate immediately. Once done, it will update the PR and Jira comment automatically.
-  - If the session is closed → find the **handoff block** in the latest Jira comment, copy it, paste it into a new Claude session, then describe your feedback. Claude will read the full ticket history (including all comments) and continue from where it left off on the same branch.
-
----
-
-### Step 4 — Done
-
-Once you've commented "Approved", the dev team reviews the code and merges it. The feature goes live automatically on production.
-
-You'll see the ticket move to **Done** when it's live.
-
----
-
-### One-time setup (ask your developer to do this)
-
-PMs don't need to install anything. Ask your developer to run:
-
-```bash
-git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
-cd ai-dev-workflow
-./install.sh
+The preview URL looks like:
+```
+https://dmp-1-feature-name.onrender.com
 ```
 
----
-
-## For Technical Product / Developers
-
-This is the person who runs Claude Code sessions to implement Jira tickets. They don't need to write code themselves — Claude does the implementation — but they need a working local environment.
-
-### Prerequisites
-
-Install the following before running setup:
-
-| Tool | Install | Purpose |
-|---|---|---|
-| **macOS** | — | Scripts are Mac-only (zsh) |
-| **Git** | Pre-installed on Mac or [git-scm.com](https://git-scm.com) | Clone and push repos |
-| **Node.js + npm** | [nodejs.org](https://nodejs.org) (LTS version) | Run GitHub MCP server |
-| **Claude Code CLI** | `npm install -g @anthropic-ai/claude-code` | AI coding sessions |
-| **Claude Pro account** | [claude.ai](https://claude.ai) | Required to use Claude Code |
-| **GitHub account** | [github.com](https://github.com) | Access to org repos |
-| **Jira account** | Your org's Atlassian workspace | Access to tickets |
-
-Verify everything is installed:
-
-```bash
-git --version       # should print git version
-node --version      # should print v18 or higher
-npm --version       # should print 9 or higher
-claude --version    # should print claude version
-```
+> The preview may take 1-2 minutes to load the first time.
 
 ---
 
-### One-time setup
+## Step 3 — Review and give feedback
 
-```bash
-git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
-cd ai-dev-workflow
-./install.sh
-```
+Open the preview URL and check it against your acceptance criteria.
 
-The install script will:
-1. Install `uv` (Python tool runner, needed for Jira MCP)
-2. Prompt you for your tokens (GitHub + Jira)
-3. Configure MCPs for both **Claude Desktop** and **Claude Code CLI** (user-scoped, applies across all repos)
-4. Copy the global `CLAUDE.md` to `~/.claude/CLAUDE.md` so Claude follows the workflow rules in every session
+**If it looks good:**
+Add a comment on the Jira ticket saying **"Approved"** — that signals the dev team to do a final code review and ship it.
 
-You'll need the following tokens ready:
+**If changes are needed:**
 
-| Token | Where to get it |
+- **Session still open** → type your feedback directly into the Claude session. Claude iterates immediately and updates the preview.
+- **Session closed** → find the handoff block at the bottom of the latest Jira comment, copy it, paste it into a new Claude session, and describe what needs to change. Claude will read all previous comments and continue from where it left off.
+
+---
+
+## Step 4 — It goes live
+
+Once you've approved, the dev team reviews the code and merges it. The feature deploys to production automatically.
+
+The Jira ticket moves to **Done** when it's live.
+
+---
+
+## Jira ticket statuses
+
+| Status | Meaning |
 |---|---|
-| GitHub Personal Access Token | [GitHub → Settings → Developer Settings → Personal Access Tokens](https://github.com/settings/tokens) — enable `repo` scope |
-| Jira URL | Your org's Atlassian URL e.g. `https://your-org.atlassian.net` |
-| Jira Email | The email you use to log into Jira |
-| Jira API Token | [Atlassian → Account Settings → Security → API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
-
-> Note: Claude Desktop uses two separate config files:
-> - `config.json` — internal preferences (do not edit)
-> - `claude_desktop_config.json` — MCP servers (this is what the install script writes)
+| To Do | Ticket is ready to be worked on |
+| In Progress | Claude is building the feature |
+| In Review | Preview is ready for you to review |
+| In Review + "Approved" comment | You've signed off, waiting for dev merge |
+| Done | Live in production |
 
 ---
 
-### Working on a ticket
+## One-time setup (you don't need to do this)
+
+PMs don't install anything. Ask your Technical PM or developer to set up the workflow on their machine — see the technical setup section below.
+
+---
+---
+
+# For Technical PM / Developers
+
+This is the person who runs Claude Code sessions. You don't need to write code — Claude does the implementation — but you need a working local environment.
+
+---
+
+## Prerequisites
+
+Install these before running setup:
+
+| Tool | How to install | Why |
+|---|---|---|
+| macOS | — | Scripts are Mac-only |
+| Git | Pre-installed, or [git-scm.com](https://git-scm.com) | Clone and push repos |
+| Node.js + npm | [nodejs.org](https://nodejs.org) — install LTS version | Run GitHub MCP server |
+| Claude Code CLI | `npm install -g @anthropic-ai/claude-code` | Run AI coding sessions |
+| Claude Pro account | [claude.ai](https://claude.ai) | Required to authenticate Claude Code |
+| GitHub account | Your org's GitHub | Access to repos |
+| Jira account | Your org's Atlassian workspace | Access to tickets |
+
+Verify everything is ready:
+
+```bash
+git --version     # v2 or higher
+node --version    # v18 or higher
+npm --version     # v9 or higher
+claude --version  # any version
+```
+
+---
+
+## One-time setup
+
+You'll need four things before running the install script. Get these ready:
+
+| Credential | Where to get it |
+|---|---|
+| GitHub Personal Access Token | [github.com/settings/tokens](https://github.com/settings/tokens) — enable `repo` scope |
+| Jira URL | e.g. `https://your-org.atlassian.net` |
+| Jira Email | The email you use to log into Jira |
+| Jira API Token | [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
+
+Then run:
+
+```bash
+git clone https://github.com/vibe-coding-projs/ai-dev-workflow.git
+cd ai-dev-workflow
+./install.sh
+```
+
+The script will prompt for your credentials and automatically:
+- Install `uv` (needed for Jira MCP)
+- Configure Jira and GitHub MCPs for Claude Code CLI and Claude Desktop
+- Copy workflow rules to `~/.claude/CLAUDE.md` so Claude follows the process in every session
+
+---
+
+## Working on a ticket
 
 ```bash
 cd ai-dev-workflow
@@ -163,26 +167,28 @@ cd ai-dev-workflow
 ```
 
 Claude will automatically:
-- Read the Jira ticket
-- Set ticket status to **In Progress**
-- Create a branch, write code, open a PR
-- Post a Jira comment per meaningful change
-- Set ticket status to **In Review** with PR link + preview URL
-- Output a handoff block for team continuity
+- Read the Jira ticket and all its comments
+- Set the ticket to **In Progress**
+- Create a branch, implement the feature, open a PR
+- Post a Jira comment for each meaningful change
+- Set the ticket to **In Review** with the PR link and preview URL
+- Post a handoff block at the end of the session
 
 ---
 
-### Continuing a session someone else started
+## Resuming a session
 
-Copy the handoff block from the Jira ticket comment and paste it into a new Claude Code session, then say:
+If a session was closed and needs to continue (e.g. PM left feedback on Jira):
 
-```
-continue work on DMP-1
-```
+1. Find the **handoff block** in the latest Jira comment
+2. Copy it and paste it into a new Claude Code session
+3. Tell Claude what the PM wants changed
+
+Claude will read the full ticket history and continue on the same branch.
 
 ---
 
-### Adding a new project
+## Adding a new project
 
 Edit `config/project-mapping.yaml`:
 
@@ -197,24 +203,12 @@ projects:
 
 ---
 
-## Jira workflow statuses
-
-| Status | Set by | Meaning |
-|---|---|---|
-| To Do | PM | Ticket is ready to be worked on |
-| In Progress | Claude | Development has started |
-| In Review | Claude | PR is open, preview is ready for PM review |
-| In Review + "Approved" comment | PM | PM has reviewed preview and signed off |
-| Done | Dev | Merged to main, live in production |
-
----
-
-## Files
+## Repo files
 
 | File | Purpose |
 |---|---|
 | `scripts/work-on-ticket.sh` | Pull repo + open Claude Code session |
 | `config/project-mapping.yaml` | Jira project → GitHub repo mapping |
-| `claude/CLAUDE.md` | Global Claude Code workflow rules (copied to `~/.claude/CLAUDE.md`) |
+| `claude/CLAUDE.md` | Global Claude workflow rules |
 | `mcp/claude_desktop_config.json` | MCP config template for Claude Desktop |
 | `install.sh` | One-time setup script |
