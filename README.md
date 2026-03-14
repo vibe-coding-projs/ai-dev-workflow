@@ -13,8 +13,9 @@ You write a Jira ticket. Claude builds it and posts a preview link for you to re
 | 3 | Claude | Reads the ticket, builds the feature, opens a PR |
 | 4 | Claude | Posts a preview URL as a Jira comment |
 | 5 | PM | Reviews the preview in their browser |
-| 6 | PM | Comments "Approved" on the Jira ticket, or gives feedback |
-| 7 | Dev team | Reviews code and merges → feature goes live |
+| 6 | PM | Types **"approve"** in the Claude session → ticket moves to In Review |
+| 6 | PM | Or types feedback → Claude iterates, then **"push and review"** to update |
+| 7 | Dev team | Reviews code on GitHub and merges → feature goes live |
 
 ---
 
@@ -120,10 +121,10 @@ https://dumb-music-player-pr-2.onrender.com
 
 Open it in your browser and check against your acceptance criteria.
 
-**If it looks good** → comment **"Approved"** on the Jira ticket. The dev team will do a final code review and ship it.
+**If it looks good** → type **"approve"** in the Claude session. Claude will move the ticket to **In Review** and notify the dev team to do a code review and ship it.
 
-**If changes are needed:**
-- **Session still open** → type your feedback directly into the Claude session. Claude iterates immediately and updates the preview.
+**If changes are needed** → describe what's wrong directly in the Claude session. Claude iterates immediately and updates the preview. When ready, say **"push and review"** to push the updated changes.
+
 - **Session closed** → find the handoff block in the latest Jira comment, copy it, paste it into a new Claude session, and describe what needs to change. Claude will read all previous comments and continue from where it left off.
 
 ### Resuming a closed session
@@ -136,13 +137,12 @@ Open it in your browser and check against your acceptance criteria.
 
 ## Jira ticket statuses
 
-| Status | Meaning |
-|---|---|
-| To Do | Ticket is ready to be worked on |
-| In Progress | Claude is building the feature |
-| In Review | Preview is ready for you to review |
-| In Review + "Approved" comment | Signed off, waiting for dev merge |
-| Done | Live in production |
+| Status | Set by | Meaning |
+|---|---|---|
+| To Do | PM | Ticket is ready to be worked on |
+| In Progress | Claude | Claude is building — also stays here while PM reviews the preview |
+| In Review | Claude (on PM approval) | PM approved the preview, ready for code review by dev team |
+| Done | Dev | Merged to main, live in production |
 
 ---
 

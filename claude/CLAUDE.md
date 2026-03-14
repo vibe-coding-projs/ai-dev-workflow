@@ -15,22 +15,25 @@ Post a Jira comment for each meaningful change, including:
 - Any blocker or open question encountered
 
 ### When done implementing
-Automatically do ALL of the following without being asked:
-1. Create a pull request on GitHub with a clear description of what was changed and why
-2. Update the Jira ticket status to **In Review** (PM will add an "Approved" comment when happy)
-3. Add a comment on the Jira ticket with:
+When the user says **"push and review"** (or similar), automatically:
+1. Push the branch and create a pull request on GitHub with a clear description of what was changed and why
+2. Add a comment on the Jira ticket with:
    - PR link
    - Render preview URL — format: `https://<service-name>-pr-<number>.onrender.com` (may take a few minutes to spin up)
    - Summary of changes made
    - Any open questions or decisions
+3. Keep the Jira ticket status as **In Progress** — it moves to **In Review** only when the PM approves
 
-### After PR is opened (human steps — for documentation)
+### When the PM approves the preview
+When the user says **"approve"** (or similar), automatically:
+1. Update the Jira ticket status to **In Review**
+2. Add a comment on the Jira ticket: "Preview approved by PM. Ready for code review."
+
+### After PR is approved (human steps — for documentation)
 The following steps happen outside Claude Code:
-1. **PM** reviews the Render preview URL
-2. **PM** adds an **"Approved"** comment on the Jira ticket when happy with the preview
-3. **Dev team / code review agents** review the PR code on GitHub
-4. **Dev** merges the PR → Render auto-deploys to production
-5. Jira ticket moves to **Done**
+1. **Dev team / code review agents** review the PR code on GitHub
+2. **Dev** merges the PR → Render auto-deploys to production
+3. Jira ticket moves to **Done**
 
 ### Session handoff block
 At the end of every session, output a handoff block in this format so anyone can continue the work:
