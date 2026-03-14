@@ -13,7 +13,7 @@ You write a Jira ticket. Claude Code implements it, opens a PR, and gives you a 
 ```
 You write Jira ticket
        ↓
-Developer runs: ./scripts/work-on-ticket.sh DMP-1
+Technical Product / Dev runs: ./scripts/work-on-ticket.sh DMP-1
        ↓
 Claude reads your ticket, builds the feature, opens a PR
        ↓
@@ -96,7 +96,34 @@ cd ai-dev-workflow
 
 ---
 
-## For Developers
+## For Technical Product / Developers
+
+This is the person who runs Claude Code sessions to implement Jira tickets. They don't need to write code themselves — Claude does the implementation — but they need a working local environment.
+
+### Prerequisites
+
+Install the following before running setup:
+
+| Tool | Install | Purpose |
+|---|---|---|
+| **macOS** | — | Scripts are Mac-only (zsh) |
+| **Git** | Pre-installed on Mac or [git-scm.com](https://git-scm.com) | Clone and push repos |
+| **Node.js + npm** | [nodejs.org](https://nodejs.org) (LTS version) | Run GitHub MCP server |
+| **Claude Code CLI** | `npm install -g @anthropic-ai/claude-code` | AI coding sessions |
+| **Claude Pro account** | [claude.ai](https://claude.ai) | Required to use Claude Code |
+| **GitHub account** | [github.com](https://github.com) | Access to org repos |
+| **Jira account** | Your org's Atlassian workspace | Access to tickets |
+
+Verify everything is installed:
+
+```bash
+git --version       # should print git version
+node --version      # should print v18 or higher
+npm --version       # should print 9 or higher
+claude --version    # should print claude version
+```
+
+---
 
 ### One-time setup
 
@@ -107,23 +134,30 @@ cd ai-dev-workflow
 ```
 
 The install script will:
-1. Prompt you for your tokens (GitHub + Jira)
-2. Configure MCPs for both **Claude Desktop** and **Claude Code CLI** (user-scoped, applies across all repos)
-3. Copy the global `CLAUDE.md` to `~/.claude/CLAUDE.md` so Claude follows the workflow rules in every session
+1. Install `uv` (Python tool runner, needed for Jira MCP)
+2. Prompt you for your tokens (GitHub + Jira)
+3. Configure MCPs for both **Claude Desktop** and **Claude Code CLI** (user-scoped, applies across all repos)
+4. Copy the global `CLAUDE.md` to `~/.claude/CLAUDE.md` so Claude follows the workflow rules in every session
 
-You'll need:
-- `GITHUB_PERSONAL_ACCESS_TOKEN` — [GitHub Settings → Tokens](https://github.com/settings/tokens)
-- `JIRA_URL` — e.g. `https://your-org.atlassian.net`
-- `JIRA_EMAIL` — your Atlassian email
-- `JIRA_API_TOKEN` — [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+You'll need the following tokens ready:
 
-> Note: Claude Desktop uses two separate files:
+| Token | Where to get it |
+|---|---|
+| GitHub Personal Access Token | [GitHub → Settings → Developer Settings → Personal Access Tokens](https://github.com/settings/tokens) — enable `repo` scope |
+| Jira URL | Your org's Atlassian URL e.g. `https://your-org.atlassian.net` |
+| Jira Email | The email you use to log into Jira |
+| Jira API Token | [Atlassian → Account Settings → Security → API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
+
+> Note: Claude Desktop uses two separate config files:
 > - `config.json` — internal preferences (do not edit)
-> - `claude_desktop_config.json` — MCP servers config (this is what the install script writes)
+> - `claude_desktop_config.json` — MCP servers (this is what the install script writes)
+
+---
 
 ### Working on a ticket
 
 ```bash
+cd ai-dev-workflow
 ./scripts/work-on-ticket.sh DMP-1
 ```
 
@@ -135,6 +169,8 @@ Claude will automatically:
 - Set ticket status to **In Review** with PR link + preview URL
 - Output a handoff block for team continuity
 
+---
+
 ### Continuing a session someone else started
 
 Copy the handoff block from the Jira ticket comment and paste it into a new Claude Code session, then say:
@@ -142,6 +178,8 @@ Copy the handoff block from the Jira ticket comment and paste it into a new Clau
 ```
 continue work on DMP-1
 ```
+
+---
 
 ### Adding a new project
 
