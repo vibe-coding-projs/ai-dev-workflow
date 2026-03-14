@@ -28,11 +28,17 @@ cd ai-dev-workflow
 ./install.sh
 ```
 
-Then fill in your tokens in `~/Library/Application Support/Claude/config.json`:
+The install script will prompt you for your tokens and write them automatically to `~/Library/Application Support/Claude/claude_desktop_config.json`.
+
+You'll need:
 - `GITHUB_PERSONAL_ACCESS_TOKEN` — [GitHub Settings → Tokens](https://github.com/settings/tokens)
 - `JIRA_HOST` — e.g. `https://your-org.atlassian.net`
 - `JIRA_EMAIL` — your Atlassian email
 - `JIRA_API_TOKEN` — [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+
+> Note: Claude Desktop uses two separate files:
+> - `config.json` — internal preferences (do not edit)
+> - `claude_desktop_config.json` — MCP servers config (this is what the install script writes)
 
 ## Working on a ticket
 
