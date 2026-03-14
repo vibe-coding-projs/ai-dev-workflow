@@ -20,7 +20,7 @@ Automatically do ALL of the following without being asked:
 2. Update the Jira ticket status to **In Review** (PM will add an "Approved" comment when happy)
 3. Add a comment on the Jira ticket with:
    - PR link
-   - Render preview URL (may take a few minutes to spin up)
+   - Render preview URL — format: `https://<service-name>-pr-<number>.onrender.com` (may take a few minutes to spin up)
    - Summary of changes made
    - Any open questions or decisions
 

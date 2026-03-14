@@ -114,7 +114,7 @@ The better your ticket, the better Claude's output. Use this format:
 
 Once Claude is done, it will post a preview URL as a Jira comment:
 ```
-https://dmp-1-feature-name.onrender.com
+https://dumb-music-player-pr-2.onrender.com
 ```
 > The preview may take 1-2 minutes to load the first time.
 
