@@ -1,0 +1,32 @@
+# Global Claude Code Instructions
+
+## Workflow rules
+
+### When starting work on a Jira ticket
+1. Read the ticket via Jira MCP
+2. Update the ticket status to **In Progress**
+3. Create a branch named `<PROJECT>-<id>-<short-description>` (e.g. `DMP-1-update-button-colors`)
+4. Add a comment to the Jira ticket with the branch name
+
+### When done implementing
+Automatically do ALL of the following without being asked:
+1. Create a pull request on GitHub with a clear description of what was changed and why
+2. Update the Jira ticket status to **In Review**
+3. Add a comment on the Jira ticket with:
+   - PR link
+   - Render preview URL (may take a few minutes to spin up)
+   - Summary of changes made
+   - Any open questions or decisions
+
+### Session handoff block
+At the end of every session, output a handoff block in this format so anyone can continue the work:
+
+```
+## Claude Session Handoff — <TICKET-ID>
+**PR:** <link>
+**Preview:** <render preview url>
+**Branch:** <branch name>
+**What was done:** <summary>
+**What's pending:** <if anything>
+**To continue:** paste this block into a new Claude Code session and say "continue work on <TICKET-ID>"
+```

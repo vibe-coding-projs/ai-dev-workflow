@@ -5,17 +5,17 @@ Config and scripts for a Jira → Claude Code → GitHub → Render preview work
 ## How it works
 
 ```
-PM creates Jira ticket (e.g. DMP-42)
+PM creates Jira ticket (e.g. DMP-1)
        ↓
-Run: ./scripts/work-on-ticket.sh DMP-42
+Run: ./scripts/work-on-ticket.sh DMP-1
        ↓
 Repo is cloned/pulled automatically
        ↓
 Claude Code session opens with ticket context
        ↓
-Claude reads ticket (via Jira MCP), writes code, opens PR
+Claude reads ticket (via Jira MCP), sets status to In Progress, writes code, opens PR
        ↓
-Render preview env spins up automatically
+Claude updates Jira ticket with PR link + preview URL
        ↓
 PM reviews preview URL → Dev merges → Prod deploy
 ```
@@ -28,11 +28,14 @@ cd ai-dev-workflow
 ./install.sh
 ```
 
-The install script will prompt you for your tokens and write them automatically to `~/Library/Application Support/Claude/claude_desktop_config.json`.
+The install script will:
+1. Prompt you for your tokens
+2. Configure MCPs for both **Claude Desktop** and **Claude Code CLI** (user-scoped, applies across all repos)
+3. Copy the global `CLAUDE.md` to `~/.claude/CLAUDE.md` so Claude follows the workflow rules in every session
 
 You'll need:
 - `GITHUB_PERSONAL_ACCESS_TOKEN` — [GitHub Settings → Tokens](https://github.com/settings/tokens)
-- `JIRA_HOST` — e.g. `https://your-org.atlassian.net`
+- `JIRA_URL` — e.g. `https://your-org.atlassian.net`
 - `JIRA_EMAIL` — your Atlassian email
 - `JIRA_API_TOKEN` — [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
 
@@ -43,8 +46,15 @@ You'll need:
 ## Working on a ticket
 
 ```bash
-./scripts/work-on-ticket.sh DMP-42
+./scripts/work-on-ticket.sh DMP-1
 ```
+
+Claude will automatically:
+- Read the Jira ticket
+- Set ticket status to **In Progress**
+- Create a branch, write code, open a PR
+- Set ticket status to **In Review** with PR link + preview URL
+- Output a handoff block for team continuity
 
 ## Adding a new project
 
@@ -53,6 +63,7 @@ Edit `config/project-mapping.yaml`:
 ```yaml
 projects:
   DMP:
+    jira_url: https://vibe-coding-projects.atlassian.net/jira/software/projects/DMP/boards/1
     repo: vibe-coding-projs/dumb-music-player
     branch: main
     local_path: ~/projects/dumb-music-player
@@ -64,5 +75,6 @@ projects:
 |---|---|
 | `scripts/work-on-ticket.sh` | Pull repo + open Claude Code session |
 | `config/project-mapping.yaml` | Jira project → GitHub repo mapping |
+| `claude/CLAUDE.md` | Global Claude Code workflow rules (copied to `~/.claude/CLAUDE.md`) |
 | `mcp/claude_desktop_config.json` | MCP config template for Claude Desktop |
 | `install.sh` | One-time setup script |
