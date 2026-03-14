@@ -17,7 +17,7 @@ Post a Jira comment for each meaningful change, including:
 ### When done implementing
 Automatically do ALL of the following without being asked:
 1. Create a pull request on GitHub with a clear description of what was changed and why
-2. Update the Jira ticket status to **In Review**
+2. Update the Jira ticket status to **In Review** (PM will add an "Approved" comment when happy)
 3. Add a comment on the Jira ticket with:
    - PR link
    - Render preview URL (may take a few minutes to spin up)
@@ -27,7 +27,7 @@ Automatically do ALL of the following without being asked:
 ### After PR is opened (human steps — for documentation)
 The following steps happen outside Claude Code:
 1. **PM** reviews the Render preview URL
-2. **PM** moves Jira ticket to **PM Approved** when happy with the preview
+2. **PM** adds an **"Approved"** comment on the Jira ticket when happy with the preview
 3. **Dev team / code review agents** review the PR code on GitHub
 4. **Dev** merges the PR → Render auto-deploys to production
 5. Jira ticket moves to **Done**

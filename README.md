@@ -21,7 +21,7 @@ You get a preview URL posted as a Jira comment
        ↓
 You review the preview in your browser
        ↓
-You move the ticket to "PM Approved" in Jira
+You add an approval comment to the Jira ticket
        ↓
 Dev team reviews the code and merges → goes live
 ```
@@ -71,14 +71,14 @@ The preview URL looks like: `https://dmp-1-feature-name.onrender.com`
 
 Open the preview URL in your browser and check against your acceptance criteria.
 
-- If it looks good → move the Jira ticket to **PM Approved**
-- If changes are needed → add a comment to the Jira ticket describing what's wrong. The developer will ask Claude to iterate.
+- If it looks good → add a comment on the Jira ticket saying **"Approved"**
+- If changes are needed → add a comment describing what's wrong. The developer will ask Claude to iterate.
 
 ---
 
 ### Step 4 — Done
 
-Once you mark it **PM Approved**, the dev team reviews the code and merges it. The feature goes live automatically on production.
+Once you've commented "Approved", the dev team reviews the code and merges it. The feature goes live automatically on production.
 
 You'll see the ticket move to **Done** when it's live.
 
@@ -202,8 +202,8 @@ projects:
 |---|---|---|
 | To Do | PM | Ticket is ready to be worked on |
 | In Progress | Claude | Development has started |
-| In Review | Claude | PR is open, preview is ready |
-| PM Approved | PM | PM has reviewed preview and approved |
+| In Review | Claude | PR is open, preview is ready for PM review |
+| In Review + "Approved" comment | PM | PM has reviewed preview and signed off |
 | Done | Dev | Merged to main, live in production |
 
 ---
