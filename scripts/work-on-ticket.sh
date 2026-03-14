@@ -8,7 +8,8 @@
 set -e
 
 TICKET=$1
-MAPPING_FILE="$(dirname "$0")/../config/project-mapping.yaml"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+MAPPING_FILE="$SCRIPT_DIR/../config/project-mapping.yaml"
 
 if [ -z "$TICKET" ]; then
   echo "Usage: ./work-on-ticket.sh <TICKET-ID> (e.g. DMP-42)"
