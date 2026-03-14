@@ -20,9 +20,9 @@ fi
 PROJECT=$(echo "$TICKET" | sed 's/-.*//')
 
 # Look up repo from mapping file
-REPO=$(grep -A1 "^  $PROJECT:" "$MAPPING_FILE" | grep "repo:" | awk '{print $2}')
-BRANCH=$(grep -A2 "^  $PROJECT:" "$MAPPING_FILE" | grep "branch:" | awk '{print $2}')
-LOCAL_PATH=$(grep -A3 "^  $PROJECT:" "$MAPPING_FILE" | grep "local_path:" | awk '{print $2}')
+REPO=$(grep -A5 "^  $PROJECT:" "$MAPPING_FILE" | grep "repo:" | awk '{print $2}')
+BRANCH=$(grep -A5 "^  $PROJECT:" "$MAPPING_FILE" | grep "branch:" | awk '{print $2}')
+LOCAL_PATH=$(grep -A5 "^  $PROJECT:" "$MAPPING_FILE" | grep "local_path:" | awk '{print $2}')
 
 if [ -z "$REPO" ]; then
   echo "Error: No mapping found for project '$PROJECT' in $MAPPING_FILE"
