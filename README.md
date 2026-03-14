@@ -73,7 +73,7 @@ Open the preview URL in your browser and check against your acceptance criteria.
 
 - If it looks good → add a comment on the Jira ticket saying **"Approved"**
 - If changes are needed → describe what's wrong directly in the Claude session. Claude will iterate immediately. Once done, it will update the PR and Jira comment automatically.
-  - If the session is closed → add a comment on the Jira ticket describing what's wrong, then run `./scripts/work-on-ticket.sh DMP-1` again. Claude will read the comment and continue.
+  - If the session is closed → find the **handoff block** in the latest Jira comment, copy it, paste it into a new Claude session, then describe your feedback. Claude will read the full ticket history (including all comments) and continue from where it left off on the same branch.
 
 ---
 
