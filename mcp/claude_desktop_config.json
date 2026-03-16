@@ -16,5 +16,13 @@
         "JIRA_API_TOKEN": "YOUR_JIRA_API_TOKEN_HERE"
       }
     }
+    ,
+    "render": {
+      "command": "npx",
+      "args": ["-y", "@niyogi/render-mcp"],
+      "env": {
+        "RENDER_API_KEY": "YOUR_RENDER_API_KEY_HERE"
+      }
+    }
   }
 }

@@ -34,6 +34,7 @@ read -p "GitHub Personal Access Token: " GITHUB_TOKEN
 read -p "Jira URL (e.g. https://your-org.atlassian.net): " JIRA_URL
 read -p "Jira Email: " JIRA_EMAIL
 read -p "Jira API Token: " JIRA_API_TOKEN
+read -p "Render API Key: " RENDER_API_KEY
 
 echo ""
 
@@ -62,6 +63,13 @@ cat > "$MCP_CONFIG_FILE" <<EOF
         "JIRA_USERNAME": "$JIRA_EMAIL",
         "JIRA_API_TOKEN": "$JIRA_API_TOKEN"
       }
+    },
+    "render": {
+      "command": "npx",
+      "args": ["-y", "@niyogi/render-mcp"],
+      "env": {
+        "RENDER_API_KEY": "$RENDER_API_KEY"
+      }
     }
   }
 }
@@ -83,6 +91,11 @@ claude mcp add github \
   --scope user \
   --env GITHUB_PERSONAL_ACCESS_TOKEN="$GITHUB_TOKEN" \
   -- npx -y @modelcontextprotocol/server-github
+
+claude mcp add render \
+  --scope user \
+  --env RENDER_API_KEY="$RENDER_API_KEY" \
+  -- npx -y @niyogi/render-mcp
 
 echo "✓ Claude Code CLI MCPs configured"
 

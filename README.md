@@ -54,6 +54,7 @@ Get these ready before running the install script:
 | Jira URL | e.g. `https://your-org.atlassian.net` |
 | Jira Email | The email you use to log into Jira |
 | Jira API Token | [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens) |
+| Render API Key | [Render Dashboard → Account Settings → API Keys](https://dashboard.render.com/u/settings#api-keys) |
 
 ### Install
 
