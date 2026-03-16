@@ -74,6 +74,20 @@ The script will prompt for your credentials and automatically:
 
 ## Day to day usage
 
+### Watching deployment status (optional)
+
+Run this in a **separate terminal** alongside your Claude Code session to get macOS notifications when Render deploys:
+
+```bash
+./scripts/watch-deployment.sh dumb-music-player
+```
+
+You'll get a notification when:
+- 🔨 Build starts
+- 🚀 Deploy is in progress
+- ✅ It goes live
+- ❌ Build or deploy fails
+
 ### Starting work on a ticket
 
 ```bash
@@ -177,6 +191,7 @@ projects:
 | File | Purpose |
 |---|---|
 | `scripts/work-on-ticket.sh` | Pull repo + open Claude Code session |
+| `scripts/watch-deployment.sh` | Poll Render and send macOS notifications on status changes |
 | `config/project-mapping.yaml` | Jira project → GitHub repo mapping |
 | `claude/CLAUDE.md` | Global Claude workflow rules |
 | `mcp/claude_desktop_config.json` | MCP config template for Claude Desktop |

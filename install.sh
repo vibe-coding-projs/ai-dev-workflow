@@ -9,7 +9,7 @@ echo "=== AI Dev Workflow Setup ==="
 echo ""
 
 # 1. Make scripts executable
-chmod +x scripts/work-on-ticket.sh
+chmod +x scripts/work-on-ticket.sh scripts/watch-deployment.sh
 echo "✓ Scripts are executable"
 echo ""
 
