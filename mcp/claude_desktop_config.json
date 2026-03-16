@@ -27,6 +27,10 @@
     "playwright": {
       "command": "npx",
       "args": ["-y", "@playwright/mcp"]
+    },
+    "chrome": {
+      "command": "npx",
+      "args": ["-y", "chrome-local-mcp"]
     }
   }
 }

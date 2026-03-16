@@ -101,6 +101,10 @@ claude mcp add playwright \
   --scope user \
   -- npx -y @playwright/mcp
 
+claude mcp add chrome \
+  --scope user \
+  -- npx -y chrome-local-mcp
+
 echo "✓ Claude Code CLI MCPs configured"
 
 # 6. Copy global CLAUDE.md and commands to ~/.claude/
