@@ -13,6 +13,7 @@ You write a Jira ticket. Claude builds it and posts a preview link for you to re
 | 3 | Claude | Reads the ticket, builds the feature, opens a PR |
 | 4 | Claude | Posts a preview URL as a Jira comment |
 | 5 | PM | Reviews the preview in their browser |
+| 6 | PM | Types **`/qa`** → Claude opens preview in browser and checks acceptance criteria |
 | 6 | PM | Types **`/approve`** in the Claude session → ticket moves to In Review |
 | 6 | PM | Or types feedback → Claude iterates, then **`/push-and-review`** to update |
 | 7 | Dev team | Reviews code on GitHub and merges → feature goes live |
@@ -121,6 +122,8 @@ https://dumb-music-player-pr-2.onrender.com
 > The preview may take 1-2 minutes to load the first time.
 
 Open it in your browser and check against your acceptance criteria.
+
+**To run automated QA first** → type **`/qa`** in the Claude session. Claude will open the preview in a browser, check each acceptance criterion, take screenshots, and post a QA report to the Jira ticket.
 
 **If it looks good** → type **`/approve`** in the Claude session. Claude will move the ticket to **In Review** and notify the dev team to do a code review and ship it.
 

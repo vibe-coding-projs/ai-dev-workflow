@@ -97,6 +97,10 @@ claude mcp add render \
   --env RENDER_API_KEY="$RENDER_API_KEY" \
   -- npx -y @niyogi/render-mcp
 
+claude mcp add playwright \
+  --scope user \
+  -- npx -y @playwright/mcp
+
 echo "✓ Claude Code CLI MCPs configured"
 
 # 6. Copy global CLAUDE.md and commands to ~/.claude/

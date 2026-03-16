@@ -23,6 +23,10 @@
       "env": {
         "RENDER_API_KEY": "YOUR_RENDER_API_KEY_HERE"
       }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp"]
     }
   }
 }
